@@ -16,14 +16,23 @@ from src.settings import settings
 
 
 MODELS = [
-    # 'aerich.models',
+    'aerich.models',
     'src.models.user'
 ]
 
+TORTOISE_ORM = {
+    "connections": {"default": str(settings.SQLALCHEMY_DATABASE_URI)},
+    "apps": {
+        "models": {
+            "models": MODELS,
+            "default_connection": "default",
+        },
+    },
+}
+
 register_orm = partial(
     RegisterTortoise,
-    db_url=str(settings.SQLALCHEMY_DATABASE_URI),
-    modules={"models": MODELS},
+    config=TORTOISE_ORM,
     generate_schemas=True,
 )
 
